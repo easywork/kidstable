@@ -1,0 +1,27 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block 'content' %}
+<body class="body" style="background-color:#f6f6f6">
+<div class='container'>
+	<!-- <div class='row'> -->
+	<form id ='form1' action="/getanswers/" method="POST">
+	<div class='row no-gutters'>
+		{% csrf_token %}
+		{% for q in questions %}
+		<div class='col-5' style="text-align:center">
+			<div class="alert alert-secondary" role="alert" style="height: 50px;">		
+			 <label style="text-align:center"> {{q}} </label>
+			 <input id={{q}} type="text" name={{q}} style=" width: 50px;"> 
+			</div>
+		</div>
+		{% endfor %}
+		<div class="col-10" style="text-align:center;">
+			<input type="submit" value="Get Answers"  style="height:28px; width:150px" >			
+		</div>
+		</form>
+	</div>
+</div>
+</body>
+</html>
+{% endblock %}
