@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from questions.views import questionHome, questionHome2, getQuestions, getAnswers
+from questions.views import questionHome, questionHome2, getQuestions, getAnswers, makeQuestions
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', questionHome),
     path('home2/', questionHome2),
     path('getquestions/', getQuestions),
-    path('getanswers/', getAnswers)
+    path('getanswers/', getAnswers),
+    path('makequestions/', makeQuestions)
 ]

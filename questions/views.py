@@ -15,18 +15,6 @@ def questionHome(request):
 def questionHome2(request):
     return render(request, 'questionhome2.html')
 
-# def getQuestions2(request):
-#     classtype = request.POST['classtype']
-#     numberOfQuestions = int(request.POST['number'])
-#     question = None
-#     if classtype == 'Class One':
-#         question = ClassOneQuestion()
-#     if classtype == 'Class Three':
-#         question = ClassThreeQuestion()
-#     questionGen = QuestionGenerator(question)
-#     questions = questionGen.generate(numberOfQuestions)
-#     return render(request, 'getquestions.html', {'questions':questions})
-
 def getQuestions(request):
     classtype = request.POST['classtype']
     numberOfQuestions = int(request.POST['number'])
@@ -46,3 +34,20 @@ def getAnswers(request):
         results.append(result)
     return render(request, 'getanswers.html', {'results':results})
 
+def getQuestions(request):
+    classtype = request.POST['classtype']
+    numberOfQuestions = int(request.POST['number'])
+    questionFactory = QuestionFactory(classtype)
+    questions = questionFactory.getInstances(numberOfQuestions)
+    return render(request, 'getquestions.html', {'questions':questions})
+
+def makeQuestions(request):
+    return render(request, 'questionhome.html')
+
+
+def saveQuestions(request):
+    classtype = request.POST['classtype']
+    numberOfQuestions = int(request.POST['number'])
+    questionFactory = QuestionFactory(classtype)
+    questions = questionFactory.getInstances(numberOfQuestions)
+    return render(request, 'getquestions.html', {'questions':questions})

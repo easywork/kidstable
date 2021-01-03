@@ -2,14 +2,29 @@
 from django.db import models
 import random
 
+CLASS_ONE = 'First Class'
+CLASS_TWO = 'Second Class'
+CLASS_THREE = 'Third Class'
+CLASS_FOUR = 'Forth Class'
+CLASS_FIVE = 'Fifth Class'
+CLASS_SIX = 'Sixth Class'
+
+CLASS_TYPES = (
+	(CLASS_ONE, 1),
+	(CLASS_TWO, 2),
+	(CLASS_THREE, 3),
+	(CLASS_FOUR, 4),
+	(CLASS_FIVE, 5),
+	(CLASS_SIX, 6)
+)
+
 class Question(object):
-	@staticmethod
-	def getOperand(operands):
-		return random.choice(operands)
+	OPERAND_RANGE = '+-*/()'  # static variable 
 
 	def __init__(self, question_=''):
 		self.numbers = []
 		self.operands = []
+		self.classType = CLASS_ONE
 		if question_.endswith('='):
 			question_ = question_[:-1]
 		self.question = question_
@@ -17,7 +32,8 @@ class Question(object):
 		if self.question != '':
 			self.parse()
 		# TODO self validate and raise error if it is invalid
-
+		# TODO '=' should also be handled
+	
 	def parse(self):
 		pass		
 
@@ -73,6 +89,10 @@ class QuestionCreator():
 	def getInstance(self):
 		pass
 
+	def getOperand(self):
+		operands = self.question.OPERAND_RANGE
+		return random.choice(operands)
+
 class ClassOneQuestion(Question):
 	OPERAND_RANGE = '+-'  # static variable for classOneQuestion
 
@@ -89,9 +109,6 @@ class ClassOneQuestion(Question):
 			self.numbers.append(int(number)) # add in the last number
 		except ValueError:
 			raise ValueError(i + " is not a valid operand")
-			# '=' should also be raised as an error
-			# TODO create test DB 
-			# TODO '1^2' is not failing,  as 1^2 will go into one number but never get int() operate
 
 class ClassOneQuestionCreator(QuestionCreator):
 	def getInstance(self):
@@ -102,7 +119,7 @@ class ClassOneQuestionCreator(QuestionCreator):
 			x = random.randint(10,30)
 			y = random.randint(5,20)
 			_numbers.append(x), _numbers.append(y)
-			o1 = Question.getOperand(ClassOneQuestion.OPERAND_RANGE)
+			o1 = self.getOperand()
 			_operands.append(o1)
 			self.question.numbers = _numbers
 			self.question.operands = _operands
@@ -120,7 +137,7 @@ class ClassThreeQuestionCreator(QuestionCreator):
 		y = random.randint(0,100)
 		self.question.numbers.append(x)
 		self.question.numbers.append(y)
-		o1 = Question.getOperand(ClassThreeQuestion.OPERAND_RANGE)
+		o1 = self.getOperand()
 		self.question.operands.append(o1)
 		return self.question
 
@@ -155,15 +172,15 @@ Workflow of using Django Forms:
 '''
 
 class QuestionDao(models.Model):
-	question = models.CharField(max_length = 50)
+	question = models.CharField(max_length = 80)
 	# question = models.TextField()  # textField doesn't control length
-	session = models.CharField(max_length = 50)
-	answer = models.CharField(max_length = 50)
+	answer = models.CharField(max_length = 10)
+	classType = models.CharField(max_length = 15, choices=CLASS_TYPES,default=CLASS_ONE)
 	
 	def saveQuestion(self, question_):
 		self.question = question_.question
 		self.answer = question_.compute()
-		self.session = 0
+		self.classType = question_.classType
 		self.save()
 
 	def retrieve(self):
@@ -176,8 +193,8 @@ class QuestionDao(models.Model):
 '''
 [ Note ]
 
- _method can be overriden in subclass,  but __method cannot
- static method can never but also never need to be overriden
+ _method can be overriden in subclass,  but _method cannot be
+ static method as whcih can never be overriden
 
 References for implementing calculator in python
 https://levelup.gitconnected.com/3-ways-to-write-a-calculator-in-python-61642f2e4a9a
