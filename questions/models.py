@@ -55,6 +55,13 @@ class Question(object):
 		x = compile(self.question,'','eval')
 		result = eval(x)
 		return result
+	
+	# def format(self):
+	# 	out = self.question
+	# 	if out.contains('*'):
+	# 		out.replace('*', '')
+	# 	f = self.question + '='
+	# 	return f
 
 	def __eq__(self, other):
 		if self.__str__() == other.__str__():
@@ -64,9 +71,10 @@ class Question(object):
 
 	def __str__(self):
 		if self.question != '':
-			return self.question
+			return self.question + '='
 		else:
-			return self._constructQuestion()
+			self._constructQuestion()
+			return self.question + '='
 
 	def _constructQuestion(self):
 		str_ = ''
@@ -78,8 +86,8 @@ class Question(object):
 			str_ = str_ + str(self.numbers[t]) 
 		for t in range(i,len(self.operands)):
 			str_ = str_ + self.operands[t]
-		str_ = str_ + '='
-		self.question = str_
+		str_ = str_ 
+		self.question = str_ 
 		return str_
 
 class QuestionCreator():
@@ -95,6 +103,10 @@ class QuestionCreator():
 
 class ClassOneQuestion(Question):
 	OPERAND_RANGE = '+-'  # static variable for classOneQuestion
+	
+	def __init__(self, question_=''):
+		super(ClassOneQuestion, self).__init__(question_)
+		self.classType = CLASS_ONE
 
 	def parse(self):
 		try:
@@ -130,16 +142,61 @@ class ClassOneQuestionCreator(QuestionCreator):
 class ClassThreeQuestion(Question):
 	OPERAND_RANGE = '+-%/'  # static variable for classOneQuestion
 
+	def __init__(self, question_=''):
+		super(ClassThreeQuestion, self).__init__(question_)
+		self.classType = CLASS_THREE
+
 class ClassThreeQuestionCreator(QuestionCreator):
+	QUESTION_SKELETON1 = 'x+y+z'
+	QUESTION_SKELETON2 = 'x+y-z'
+	QUESTION_SKELETON3 = 'x-y+z'
+	QUESTION_SKELETON4 = 'x-y-z'
+	QUESTION_SKELETON5 = 'x*y'
+	QUESTION_SKELETON6 = 'x/y'
+	QUESTION_SKELETONS = [QUESTION_SKELETON1, QUESTION_SKELETON2, QUESTION_SKELETON3,
+		QUESTION_SKELETON4, QUESTION_SKELETON5, QUESTION_SKELETON6]
+
 	def getInstance(self):
-		self.question = ClassThreeQuestion()
-		x = random.randint(0,100)
-		y = random.randint(0,100)
-		self.question.numbers.append(x)
-		self.question.numbers.append(y)
-		o1 = self.getOperand()
-		self.question.operands.append(o1)
+		question_ = self. _getQuestionSkeleton()
+		xyz = self._getXYZ()
+		x = xyz[0]; y = xyz[1]; z = xyz[2]
+		
+		if question_ == self.QUESTION_SKELETON2:
+			while x+y < z :
+				xyz = self._getXYZ()
+				x = xyz[0]; y = xyz[1]; z = xyz[2]
+		if question_ == self.QUESTION_SKELETON3:
+			while x < y:
+				xyz = self._getXYZ()
+				x = xyz[0]; y = xyz[1]; z = xyz[2]				
+		if question_ == self.QUESTION_SKELETON4:
+			while x < y or (x-y) < z:
+				xyz = self._getXYZ()
+				x = xyz[0]; y = xyz[1]; z = xyz[2]
+		if question_ == self.QUESTION_SKELETON5:
+			while x > 9 or y > 9:
+				x = random.randint(2,9)
+				y = random.randint(2,9)
+		if question_ == self.QUESTION_SKELETON6:
+			while x / y == 0 or x % y != 0:
+				x = random.randint(4,81)
+				y = random.randint(2,9)
+
+		question_ = question_.replace('x',str(x))
+		question_ = question_.replace('y',str(y))
+		question_ = question_.replace('z',str(z))
+		self.question = ClassThreeQuestion(question_)
 		return self.question
+
+	def _getQuestionSkeleton(self):
+		t = random.randint(0,5)
+		return self.QUESTION_SKELETONS[t]
+
+	def _getXYZ(self):
+		x = random.randint(10,100)
+		y = random.randint(10,80)
+		z = random.randint(10,50)
+		return [x,y,z]
 
 '''
  We use the Questions class to encapsulate the internal use of list to hold the question instances. This allows better encaplusation 

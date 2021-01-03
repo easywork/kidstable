@@ -30,7 +30,7 @@ def getAnswers(request):
             continue
         question = Question(name)
         answer = question.getAnswer()
-        result = str(question) + ' = ' + str(answer)
+        result = str(question) + str(answer)
         results.append(result)
     return render(request, 'getanswers.html', {'results':results})
 
@@ -39,6 +39,7 @@ def getQuestions(request):
     numberOfQuestions = int(request.POST['number'])
     questionFactory = QuestionFactory(classtype)
     questions = questionFactory.getInstances(numberOfQuestions)
+    # questionInFormats = [ q.printf() for q in questions]
     return render(request, 'getquestions.html', {'questions':questions})
 
 def makeQuestions(request):
