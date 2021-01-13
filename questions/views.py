@@ -12,9 +12,6 @@ def questionHome(request):
 	#return HttpResponse('This is the test page')
 	return render(request, 'questionhome.html')
 
-def questionHome2(request):
-    return render(request, 'questionhome2.html')
-
 def getQuestions(request):
     classtype = request.POST['classtype']
     numberOfQuestions = int(request.POST['number'])

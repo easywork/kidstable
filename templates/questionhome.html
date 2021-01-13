@@ -1,48 +1,36 @@
 {% extends './base.html' %}
 {% load static %}
-
 {% block 'content' %}
-<body class="body" style="background-color:#f6f6f6">
+<body>
+<main role='main'>
 
-<div class='container'  style="background-color:#e2e3e5; height:120px; width:400px">
-  <div class='row no-gutters'>
-  <form id="form1" action="/getquestions/" method="post">  {% csrf_token %}
+  <section class="jumbotron text-center" style="background-color:#e2e3e5;">
+    <div class="container">
+        <h2>Choose your questions</h2>
+        <form id="form1" action="/getquestions/" method="post">  {% csrf_token %}
+         <p>Which Class <select id="class" name="classtype">
+          <option value="Class One">Class One</option>option>
+          <option value="Class Three">Class Three</option>option>
+         </select> </p>
 
-		  <div class="col-12 col-centered">
-        <!-- <div class="alert alert-secondary" role="alert" style="height: 50px;"> -->
-            Which Class <select id="class" name="classtype">
-                <option value="Class One">Class One</option>option>
-                <!-- <option value="Class Two">Class Two</option>option> -->
-                <option value="Class Three">Class Three</option>option>
-              </select>
-            <!-- </div> -->
-      </div>
+         <p>Number of Questions <select id="number" name="number" style="height:28px; width:80px">
+              <option value="10">10</option>option>
+              <option value="20">20</option>option>
+          </select></p>
 
-      <div class="col-12">
-        <!-- <div class="alert alert-secondary" role="alert" style="height: 50px;"> -->
-            Number of Questions <select id="number" name="number" style="height:28px; width:80px">
-            <!-- Number of Questions <select id="number" name="number"> -->
-                <option value="10">10</option>option>
-                <!-- <option value="Class Two">Class Two</option>option> -->
-                <option value="20">20</option>option>
-            </select>
-        <!-- </div> -->
-      </div>   
-         
-      <div class="col-12">
-        <!-- <div class="alert alert-secondary" role="alert" style="height: 50px;"> -->
-              <input type="submit" value="Get Questions"  style="height:28px; width:150px" >
-        <!-- </div> -->
-      </div>
+          <p><input type="submit" value="Get Questions"  style="height:28px; width:150px" ></p>
+        </form>
+    </div>
+  </section>
 
-    </div>    
-  </form>
-  </div>
-</div>
+  <!-- <div class="album py-5 bg-light">
+  </div> -->
+
+</main>
 
 <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+      
 </body>
 </html>
 {% endblock %}
-

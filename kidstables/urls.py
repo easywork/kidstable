@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from questions.views import questionHome, questionHome2, getQuestions, getAnswers, makeQuestions
+import questions.views as views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', questionHome),
-    path('home2/', questionHome2),
-    path('getquestions/', getQuestions),
-    path('getanswers/', getAnswers),
-    path('makequestions/', makeQuestions)
+    path('home/', views.questionHome),
+    path('getquestions/', views.getQuestions),
+    path('getanswers/', views.getAnswers),
+    path('makequestions/', views.makeQuestions)
 ]
