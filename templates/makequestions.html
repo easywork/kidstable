@@ -9,30 +9,21 @@
   <form id="form1" action="/getquestions/" method="post">  {% csrf_token %}
 
 		  <div class="col-12 col-centered">
-        <!-- <div class="alert alert-secondary" role="alert" style="height: 50px;"> -->
             Which Class <select id="class" name="classtype">
                 <option value="Class One">Class One</option>option>
-                <!-- <option value="Class Two">Class Two</option>option> -->
                 <option value="Class One">Class Three</option>option>
               </select>
-            <!-- </div> -->
       </div>
 
       <div class="col-12">
-        <!-- <div class="alert alert-secondary" role="alert" style="height: 50px;"> -->
             Number of Questions <select id="number" name="number" style="height:28px; width:80px">
-            <!-- Number of Questions <select id="number" name="number"> -->
                 <option value="10">10</option>option>
-                <!-- <option value="Class Two">Class Two</option>option> -->
                 <option value="20">20</option>option>
             </select>
-        <!-- </div> -->
       </div>   
          
       <div class="col-12">
-        <!-- <div class="alert alert-secondary" role="alert" style="height: 50px;"> -->
               <input type="submit" value="Get Questions"  style="height:28px; width:150px" >
-        <!-- </div> -->
       </div>
 
     </div>    

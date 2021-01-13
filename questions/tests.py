@@ -49,11 +49,3 @@ class QuestionsTestcase(TestCase):
 		questions = q.retrieve()
 		self.assertIn(questions[0].question, '3+3')
 		# self.assertContains(response, "sth") # assertContains is for httpResponse
-
-
-'''
-if __name__ == '__main__()':
-	testClassOneQuestions()
-
-	testClassThreeQuestions()
-'''

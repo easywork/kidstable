@@ -19,7 +19,7 @@ CLASS_TYPES = (
 )
 
 class Question(object):
-	OPERAND_RANGE = '+-*/()'  # static variable 
+	OPERAND_RANGE = '+-*/()'  
 
 	def __init__(self, question_=''):
 		self.numbers = []
@@ -32,7 +32,6 @@ class Question(object):
 		if self.question != '':
 			self.parse()
 		# TODO self validate and raise error if it is invalid
-		# TODO '=' should also be handled
 	
 	def parse(self):
 		pass		
@@ -198,10 +197,10 @@ class ClassThreeQuestionCreator(QuestionCreator):
 		z = random.randint(10,50)
 		return [x,y,z]
 
-'''
- We use the Questions class to encapsulate the internal use of list to hold the question instances. This allows better encaplusation 
- for future change.  See <<clean code>>  P115 
-'''
+#  We use the Questions class to encapsulate the internal use of list to hold
+#  the question instances. This allows better encaplusation for future change.  
+# See <<clean code>>  P115 
+
 class QuestionFactory(object):
 	def __init__(self, questiontype):
 		self.questionCreator = QuestionCreator()
@@ -217,20 +216,8 @@ class QuestionFactory(object):
 			questions.append(q)
 		return questions
 
-'''
-Workflow of using Django Forms:
-* add model using django model
-* setting.py > Intall_APPS,  add 'questions'
-* add the new model to admin.py
-* Every time makes change to a model, need to apply the migration CLI
-# manage.py makemigrations
-# python mpython manage.py migrate
-# python mpython manage.py createsuperuser
-'''
-
 class QuestionDao(models.Model):
-	question = models.CharField(max_length = 80)
-	# question = models.TextField()  # textField doesn't control length
+	question = models.CharField(max_length = 80) # or use textField for unlimited length
 	answer = models.CharField(max_length = 10)
 	classType = models.CharField(max_length = 15, choices=CLASS_TYPES,default=CLASS_ONE)
 	
@@ -244,16 +231,18 @@ class QuestionDao(models.Model):
 		questions = QuestionDao.objects.all()
 		return questions
 
+	# reload the __str__ method in order to make it readable on admin page
+	def __str__(self):
+		return self.question
+
 	class Meta:
 		db_table = "questions"
 
-'''
-[ Note ]
 
- _method can be overriden in subclass,  but _method cannot be
- static method as whcih can never be overriden
+# [ Note ]
+#  _method can be overriden in subclass,  but _method cannot be
+#  static method as whcih can never be overriden
 
-References for implementing calculator in python
-https://levelup.gitconnected.com/3-ways-to-write-a-calculator-in-python-61642f2e4a9a
+# References for implementing calculator in python
+# https://levelup.gitconnected.com/3-ways-to-write-a-calculator-in-python-61642f2e4a9a
 
-'''
