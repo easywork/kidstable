@@ -42,7 +42,6 @@ def getQuestions(request):
 def makeQuestions(request):
     return render(request, 'questionhome.html')
 
-
 def saveQuestions(request):
     classtype = request.POST['classtype']
     numberOfQuestions = int(request.POST['number'])

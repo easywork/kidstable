@@ -1,4 +1,3 @@
-
 from django.db import models
 import random
 
@@ -8,6 +7,9 @@ CLASS_THREE = 'Third Class'
 CLASS_FOUR = 'Forth Class'
 CLASS_FIVE = 'Fifth Class'
 CLASS_SIX = 'Sixth Class'
+
+MULTIPLY_SIGN = chr(215)
+DIVIDEND_SIGN = chr(247)
 
 CLASS_TYPES = (
 	(CLASS_ONE, 1),
@@ -22,26 +24,22 @@ class Question(object):
 	OPERAND_RANGE = '+-*/()'  
 
 	def __init__(self, question_=''):
-		self.numbers = []
-		self.operands = []
-		self.classType = CLASS_ONE
+		self.class_type = CLASS_ONE
 		if question_.endswith('='):
 			question_ = question_[:-1]
-		self.question = question_
+		question2_ = Question._parse_dividend_multiply_signs(question_)
+		self._question = question2_
 		self.answer = ''
-		if self.question != '':
-			self.parse()
-		# TODO self validate and raise error if it is invalid
+		self._validate()
 	
-	def parse(self):
-		pass		
+	@staticmethod
+	def	_parse_dividend_multiply_signs(question_):
+		question = question_.replace(MULTIPLY_SIGN, '*') 
+		question = question.replace(DIVIDEND_SIGN, '/')
+		return question
 
-	def validate(self):
-		o1 = self.operands[0]
-		if o1 == '-' and self.numbers[1] > self.numbers[0]:
-			return False
-		else:
-			return True
+	def _validate(self):
+		pass
 	
 	def getAnswer(self):
 		if self.answer != '':
@@ -51,16 +49,9 @@ class Question(object):
 			return answer
 
 	def _compute(self):
-		x = compile(self.question,'','eval')
+		x = compile(self._question,'','eval')
 		result = eval(x)
-		return result
-	
-	# def format(self):
-	# 	out = self.question
-	# 	if out.contains('*'):
-	# 		out.replace('*', '')
-	# 	f = self.question + '='
-	# 	return f
+		return int(result)
 
 	def __eq__(self, other):
 		if self.__str__() == other.__str__():
@@ -69,30 +60,25 @@ class Question(object):
 			return False
 
 	def __str__(self):
-		if self.question != '':
-			return self.question + '='
-		else:
+		if self._question is '':
 			self._constructQuestion()
-			return self.question + '='
+		question = self._question
+		question = Question._replace_dividend_multiply_signs(question)
+		return "{}=".format(question)
 
-	def _constructQuestion(self):
-		str_ = ''
-		i = 0
-		while i < len(self.numbers) and i < len(self.operands):
-			str_ = str_ + str(self.numbers[i]) + self.operands[i]
-			i += 1
-		for t in range(i,len(self.numbers)):
-			str_ = str_ + str(self.numbers[t]) 
-		for t in range(i,len(self.operands)):
-			str_ = str_ + self.operands[t]
-		str_ = str_ 
-		self.question = str_ 
-		return str_
+	def __hash__(self):
+		return self._question.__hash__()
+
+	@staticmethod
+	def	_replace_dividend_multiply_signs(question_):
+		question = question_.replace('*', MULTIPLY_SIGN) 
+		question = question.replace('/', DIVIDEND_SIGN)
+		return question
 
 class QuestionCreator():
-	def __init__(self):
-		self.question = Question()
-
+	""" question creator will be called by the factory
+	method to generate question of a given class in batch
+	"""
 	def getInstance(self):
 		pass
 
@@ -101,44 +87,36 @@ class QuestionCreator():
 		return random.choice(operands)
 
 class ClassOneQuestion(Question):
+	""" Question of first class
+	"""
 	OPERAND_RANGE = '+-'  # static variable for classOneQuestion
 	
 	def __init__(self, question_=''):
 		super(ClassOneQuestion, self).__init__(question_)
 		self.classType = CLASS_ONE
 
-	def parse(self):
+	def _validate(self):
 		try:
-			number = ''	
-			for i in self.question:
-				if i not in self.OPERAND_RANGE:
-					number = number + i
-				else:
-					self.operands.append(i)
-					self.numbers.append(int(number))
-					number = ''
-			self.numbers.append(int(number)) # add in the last number
-		except ValueError:
-			raise ValueError(i + " is not a valid operand")
+			answer = self.getAnswer()
+			if answer < 0:
+				raise ValueError(" the question is too complicate")
+		except SyntaxError:
+			err_msg = '{} is not a \
+		   		valid queston'.format(self._question)
+			raise ValueError(err_msg)
+		#TODO: need to defne Error Class for this
 
 class ClassOneQuestionCreator(QuestionCreator):
 	def getInstance(self):
-		self.question = ClassOneQuestion()
-		while True:
-			_numbers = []
-			_operands = []
-			x = random.randint(10,30)
-			y = random.randint(5,20)
-			_numbers.append(x), _numbers.append(y)
-			o1 = self.getOperand()
-			_operands.append(o1)
-			self.question.numbers = _numbers
-			self.question.operands = _operands
-			if self.question.validate():
-				break
-		return self.question
+		x = random.randint(10, 30)
+		y = random.randint(x-8, x)
+		operand = random.choice(ClassOneQuestion.OPERAND_RANGE)
+		question_ = '{}{}{}'.format(x,operand,y)
+		question = ClassOneQuestion(question_)
+		return question
 			
 class ClassThreeQuestion(Question):
+	""" Third Class Question """
 	OPERAND_RANGE = '+-%/'  # static variable for classOneQuestion
 
 	def __init__(self, question_=''):
@@ -146,6 +124,9 @@ class ClassThreeQuestion(Question):
 		self.classType = CLASS_THREE
 
 class ClassThreeQuestionCreator(QuestionCreator):
+	""" Creator for third  class, it will be
+		called by factory class    
+	"""
 	QUESTION_SKELETON1 = 'x+y+z'
 	QUESTION_SKELETON2 = 'x+y-z'
 	QUESTION_SKELETON3 = 'x-y+z'
@@ -184,8 +165,8 @@ class ClassThreeQuestionCreator(QuestionCreator):
 		question_ = question_.replace('x',str(x))
 		question_ = question_.replace('y',str(y))
 		question_ = question_.replace('z',str(z))
-		self.question = ClassThreeQuestion(question_)
-		return self.question
+		question = ClassThreeQuestion(question_)
+		return question
 
 	def _getQuestionSkeleton(self):
 		t = random.randint(0,5)
@@ -201,7 +182,11 @@ class ClassThreeQuestionCreator(QuestionCreator):
 #  the question instances. This allows better encaplusation for future change.  
 # See <<clean code>>  P115 
 
-class QuestionFactory(object):
+class QuestionFactory():	
+	"""This is the factory method to generates a batch of questions
+
+		Attribute: questionCreator
+	"""
 	def __init__(self, questiontype):
 		self.questionCreator = QuestionCreator()
 		if questiontype == 'Class One':
@@ -210,10 +195,10 @@ class QuestionFactory(object):
 			self.questionCreator = ClassThreeQuestionCreator()
 
 	def getInstances(self, numberOfQuestions):
-		questions = []
+		questions = set() # use set to avoid duplicate questions
 		for _ in range(0, numberOfQuestions):
 			q = self.questionCreator.getInstance()
-			questions.append(q)
+			questions.add(q)
 		return questions
 
 class QuestionDao(models.Model):
