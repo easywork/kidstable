@@ -13,8 +13,9 @@ SECRET_KEY = 'li&8(qu674v8_8-ic+xo+!jov)^rmo#o_a0yxs6yj_aghy^y7v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.14', '127.0.0.1']
-
+ALLOWED_HOSTS = ['192.168.1.14', '127.0.0.1', 'localhost']
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
 
 # Application definition
 
@@ -26,6 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'questions',
+    # add below for rest api
+    'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE = [

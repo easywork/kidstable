@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from questions import views
 
 urlpatterns = [
@@ -22,5 +22,6 @@ urlpatterns = [
     path('home/', views.questionHome),
     path('getquestions/', views.getQuestions),
     path('getanswers/', views.getAnswers),
-    path('makequestions/', views.makeQuestions)
+    path('makequestions/', views.makeQuestions),
+    path('api/', include('api.urls')), # add in this for api calls
 ]
