@@ -66,6 +66,9 @@ class Question(object):
 		question = Question._replace_dividend_multiply_signs(question)
 		return "{}=".format(question)
 
+	def __repr__(self):
+		return self._question
+
 	def __hash__(self):
 		return self._question.__hash__()
 
@@ -200,29 +203,6 @@ class QuestionFactory():
 			q = self.questionCreator.getInstance()
 			questions.add(q)
 		return questions
-
-class QuestionDao(models.Model):
-	question = models.CharField(max_length = 80) # or use textField for unlimited length
-	answer = models.CharField(max_length = 10)
-	classType = models.CharField(max_length = 15, choices=CLASS_TYPES,default=CLASS_ONE)
-	
-	def saveQuestion(self, question_):
-		self.question = question_.question
-		self.answer = question_.compute()
-		self.classType = question_.classType
-		self.save()
-
-	def retrieve(self):
-		questions = QuestionDao.objects.all()
-		return questions
-
-	# reload the __str__ method in order to make it readable on admin page
-	def __str__(self):
-		return self.question
-
-	class Meta:
-		db_table = "questions"
-
 
 # [ Note ]
 #  _method can be overriden in subclass,  but _method cannot be
