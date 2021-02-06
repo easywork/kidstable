@@ -2,6 +2,7 @@ from django.test import TestCase
 
 # Create your tests here.
 from .models import Question, ClassOneQuestion, ClassThreeQuestion, ClassThreeQuestionCreator
+from . import models
 from . import dao
 
 class QuestionsTestcase(TestCase):
@@ -36,28 +37,35 @@ class QuestionsTestcase(TestCase):
 		self.assertGreaterEqual(q2.getAnswer(), 0)
 		self.assertGreaterEqual(q3.getAnswer(), 0)
 
-	def testQuestionDao(self):
-		# questions = QuestionDao.retrieve()
-		q = dao.QuestionDao()
-		q.session = '001'
-		q.answer = '0'
-		q.question = '3+3'
-		q.save()
-		questions = q.retrieve()
-		self.assertEqual(questions[0].question, '3+3')
-		# self.assertContains(response, "sth") # assertContains is for httpResponse
+	def testXQuestionsCreator(self):
+		creator1 = models.XQuestionCreator(8, '+')
+		creator2 = models.XQuestionCreator(4, '*')
+		q1 = creator1.getInstance()
+		q2 = creator2.getInstance()
+		self.assertTrue('8+' in repr(q1))
+		self.assertTrue('4*' in repr(q2))
 
-	def testQuestionWithRedis(self):
-		q1 = ClassOneQuestion('1+2')
-		q2 = ClassThreeQuestion('5-4')
-		q3 = Question('3*4')
-		q4 = Question('5+3*(1+1)') 
-		qset = {q1, q2, q3, q4}
-		redis_db = dao.QuestionRedisDao()
-		redis_db.testMode()
-		session_id = redis_db.save(qset)
-		assert session_id is not None
-		print('the session id is {}'.format(session_id))
-		qset2 = redis_db.get(session_id)
-		print('The questions are {}'.format(qset2))
-		self.assertIn(repr(q3).encode('utf8'), qset2)
+	# def testQuestionDao(self):
+	# 	q = dao.QuestionDao()
+	# 	q.session = '001'
+	# 	q.answer = '0'
+	# 	q.question = '3+3'
+	# 	q.save()
+	# 	questions = q.retrieve()
+	# 	self.assertEqual(questions[0].question, '3+3')
+	# 	# self.assertContains(response, "sth") # assertContains is for httpResponse
+
+	# def testQuestionWithRedis(self):
+	# 	q1 = ClassOneQuestion('1+2')
+	# 	q2 = ClassThreeQuestion('5-4')
+	# 	q3 = Question('3*4')
+	# 	q4 = Question('5+3*(1+1)') 
+	# 	qset = {q1, q2, q3, q4}
+	# 	redis_db = dao.QuestionRedisDao()
+	# 	redis_db.testMode()
+	# 	session_id = redis_db.save(qset)
+	# 	assert session_id is not None
+	# 	print('the session id is {}'.format(session_id))
+	# 	qset2 = redis_db.get(session_id)
+	# 	print('The questions are {}'.format(qset2))
+	# 	self.assertIn(repr(q3).encode('utf8'), qset2)

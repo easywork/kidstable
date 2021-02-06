@@ -7,6 +7,7 @@ CLASS_THREE = 'Third Class'
 CLASS_FOUR = 'Forth Class'
 CLASS_FIVE = 'Fifth Class'
 CLASS_SIX = 'Sixth Class'
+CLASS_X = 'X Class'
 
 MULTIPLY_SIGN = chr(215)
 DIVIDEND_SIGN = chr(247)
@@ -17,14 +18,19 @@ CLASS_TYPES = (
 	(CLASS_THREE, 3),
 	(CLASS_FOUR, 4),
 	(CLASS_FIVE, 5),
-	(CLASS_SIX, 6)
+	(CLASS_SIX, 6),
+	(CLASS_X, 7)
 )
 
 class Question(object):
+	""" Question object, use repr() to represent the python format
+	use str() to represent the the print format
+	"""
+
 	OPERAND_RANGE = '+-*/()'  
 
 	def __init__(self, question_=''):
-		self.class_type = CLASS_ONE
+		self.class_type = CLASS_X
 		if question_.endswith('='):
 			question_ = question_[:-1]
 		question2_ = Question._parse_dividend_multiply_signs(question_)
@@ -181,7 +187,31 @@ class ClassThreeQuestionCreator(QuestionCreator):
 		z = random.randint(10,50)
 		return [x,y,z]
 
-#  We use the Questions class to encapsulate the internal use of list to hold
+class XQuestionCreator(QuestionCreator):
+	""" X question creator creates question based on
+	a given number and operand
+
+	Attribute:
+	seed: a number, all queston should have this number
+	operand: the must included operand
+	"""
+
+	def __init__(self, seed_, operand_):
+		self.seed = seed_
+		self.operand = operand_
+
+	def getInstance(self):
+		x = self.seed
+		operand = self.operand
+		if operand is '-' or operand is '/':
+			y = random.randint(2, y)
+		else:
+			y = random.randint(5, 20)
+		question_ = str(x) + operand + str(y)
+		question = Question(question_)  
+		return question
+
+# TODO: we should use Questions class to encapsulate the use of list to hold
 #  the question instances. This allows better encaplusation for future change.  
 # See <<clean code>>  P115 
 
