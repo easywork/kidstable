@@ -21,7 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.questionHome),
     path('getquestions/', views.getQuestions),
+    path('getquestions2/', views.getQuestions2),
     path('getanswers/', views.getAnswers),
-    path('makequestions/', views.makeQuestions),
+    #path('makequestions/', views.makeQuestions),
     path('api/', include('api.urls')), # add in this for api calls
 ]

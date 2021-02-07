@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # from .models import QuestionGenerator, Question, ClassOneQuestion, ClassThreeQuestion
 from .models import Question, QuestionFactory
+from . import models
 
 # NUMBER_OF_QUESTIONS = 20
 
@@ -16,6 +17,16 @@ def getQuestions(request):
     classtype = request.POST['classtype']
     numberOfQuestions = int(request.POST['number'])
     questionFactory = QuestionFactory(classtype)
+    questions = questionFactory.getInstances(numberOfQuestions)
+    return render(request, 'getquestions.html', {'questions':questions})
+
+def getQuestions2(request):
+    seed = int(request.POST['seed'])
+    operand = request.POST['operand']
+    numberOfQuestions = int(request.POST['number'])
+    questionFactory = QuestionFactory()
+    questionCreator = models.XQuestionCreator(seed, operand)
+    questionFactory.questionCreator = questionCreator
     questions = questionFactory.getInstances(numberOfQuestions)
     return render(request, 'getquestions.html', {'questions':questions})
 

@@ -203,10 +203,13 @@ class XQuestionCreator(QuestionCreator):
 	def getInstance(self):
 		x = self.seed
 		operand = self.operand
-		if operand is '-' or operand is '/':
-			y = random.randint(2, y)
-		else:
-			y = random.randint(5, 20)
+		y = 0
+		if operand == '-' or operand == '/':
+			y = random.randint(2, x)
+		if operand == '+':
+			y = random.randint(5, 50)
+		if operand == '*':
+			y = random.randint(2,11)
 		question_ = str(x) + operand + str(y)
 		question = Question(question_)  
 		return question
@@ -220,7 +223,7 @@ class QuestionFactory():
 
 		Attribute: questionCreator
 	"""
-	def __init__(self, questiontype):
+	def __init__(self, questiontype=CLASS_X):
 		self.questionCreator = QuestionCreator()
 		if questiontype == 'Class One':
 			self.questionCreator = ClassOneQuestionCreator()
@@ -229,9 +232,11 @@ class QuestionFactory():
 
 	def getInstances(self, numberOfQuestions):
 		questions = set() # use set to avoid duplicate questions
-		for _ in range(0, numberOfQuestions):
+		timer = 1
+		while len(questions) < numberOfQuestions and timer < 100:
 			q = self.questionCreator.getInstance()
 			questions.add(q)
+			timer += 1
 		return questions
 
 # [ Note ]

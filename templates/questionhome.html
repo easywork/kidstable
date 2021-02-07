@@ -23,6 +23,32 @@
     </div>
   </section>
 
+  <section class="jumbotron text-center" style="background-color:#e2e3e5;">
+    <div class="container">
+        <h2>Define your questions</h2>
+        <form id="form2" action="/getquestions2/" method="post">  {% csrf_token %}
+          <p>
+            Questions for <input type="text" id="seed" name="seed" style="height:28px; width:80px">
+          </p>
+    
+          <p>Select Operand <select id="operand" name="operand" style="height:28px; width:80px">
+                <option value="+">+</option>option>
+                <option value="-">-</option>option>
+                <option value="*">&#215;</option>option>
+                <option value="/">&#247;</option>option>
+          </select></p> 
+
+          <p>Number of Questions <select id="number" name="number" style="height:28px; width:80px">
+            <option value="10">10</option>option>
+            <option value="20">20</option>option>
+          </select></p>
+             
+          <p><input type="submit" value="Get Questions"  style="height:28px; width:150px" ></p>  
+      </form>
+    </div>
+  </section>
+
+
   <!-- <div class="album py-5 bg-light">
   </div> -->
 
