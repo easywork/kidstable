@@ -48,9 +48,17 @@
     </div>
   </section>
 
-
-  <!-- <div class="album py-5 bg-light">
-  </div> -->
+  <section class="jumbotron text-center" style="background-color:#e2e3e5;">
+    <div class="container">
+        <h2>Retrieve previous questions </h2>
+        <form id="form3" action="/retrievequestions/" method="post">  {% csrf_token %}
+          <p>
+            Your Session ID <input type="text" id="sessionid" name="sessionid" style="height:28px; width:80px">
+          </p>
+          <p><input type="submit" value="Retrieve"  style="height:28px; width:150px" ></p>  
+      </form>
+    </div>
+  </section>
 
 </main>
 

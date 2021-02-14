@@ -6,6 +6,7 @@ from django.http import HttpResponse
 # from .models import QuestionGenerator, Question, ClassOneQuestion, ClassThreeQuestion
 from .models import Question, QuestionFactory
 from . import models
+from . import dao
 
 # NUMBER_OF_QUESTIONS = 20
 
@@ -54,8 +55,25 @@ def makeQuestions(request):
     return render(request, 'questionhome.html')
 
 def saveQuestions(request):
-    classtype = request.POST['classtype']
-    numberOfQuestions = int(request.POST['number'])
-    questionFactory = QuestionFactory(classtype)
-    questions = questionFactory.getInstances(numberOfQuestions)
-    return render(request, 'getquestions.html', {'questions':questions})
+    querystr = request.POST 
+    table = dict()
+    dao_ = dao.SessionCacher()
+    for name in querystr:  # loop over the 'name' from query strings
+        if name.startswith('csr'):
+            continue
+        question_ = name
+        answer = request.POST[question_]
+        #print('question is {} answer is {}'.format(question_, answer))
+        table[question_] = answer
+    session_id = dao_.save(table)
+    return render(request, 'returnsessionid.html', {'session_id':session_id})
+
+def retrieveQuestionBySessionId(request):
+    session_id = request.POST['sessionid']
+    dao_ = dao.SessionCacher()
+    questionlist = dao_.retrieve(session_id)
+    return render(request, 'retrievesession.html', {'questionlist':questionlist})
+
+
+
+

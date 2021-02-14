@@ -209,7 +209,7 @@ class XQuestionCreator(QuestionCreator):
 		if operand == '+':
 			y = random.randint(5, 50)
 		if operand == '*':
-			y = random.randint(2,11)
+			y = random.randint(2,20)
 		question_ = str(x) + operand + str(y)
 		question = Question(question_)  
 		return question

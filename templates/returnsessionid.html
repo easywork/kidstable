@@ -1,0 +1,25 @@
+{% extends './base.html' %}
+{% load static %}
+{% block 'content' %}
+<body>
+<main role='main'>
+
+  <section class="jumbotron text-center" style="background-color:#e2e3e5;">
+    <div class="container">
+        <h2>Please save your session ID </h2>
+         <p>{{session_id}}</p>
+    </div>
+  </section>
+
+
+  <!-- <div class="album py-5 bg-light">
+  </div> -->
+
+</main>
+
+<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+      
+</body>
+</html>
+{% endblock %}

@@ -4,14 +4,14 @@
 {% block 'content' %}
 <body class="body" style="background-color:#f6f6f6">
 <div class='container'>
-	<form id ='form1' action="/getanswers/" method="POST">
+	<form action=""/getanswers/"" method="POST">
 	<div class='row no-gutters'>
 		{% csrf_token %}
-		{% for q in questions %}
-		<div class='col-5' style="text-align:right">
+		{% for question,answer in questionlist.items %}
+		<div class='col-5' style="text-align:center">
 			<div class="alert alert-secondary" role="alert" style="height: 50px;">		
-			 <label style="text-align:right"> {{q}} </label>
-			 <input id={{q}} type="text" name={{q}} style=" width: 50px;"> 
+			 <label style="text-align:right"> {{question}} </label>
+			 <input id="{{questions}}" type="text" name="{{questions}}" value="{{answer}}" style=" width: 50px;"> 
 			</div>
 		</div>
 		{% endfor %}
