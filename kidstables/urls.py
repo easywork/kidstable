@@ -23,6 +23,7 @@ urlpatterns = [
     path('getquestions/', views.getQuestions),
     path('getquestions2/', views.getQuestions2),
     path('getanswers/', views.getAnswers),
+    path('verify/', views.verify),
     path('savequestions/', views.saveQuestions),
     path('retrievequestions/', views.retrieveQuestionBySessionId),
     #path('makequestions/', views.makeQuestions),
