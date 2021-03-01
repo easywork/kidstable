@@ -4,22 +4,23 @@
 {% block 'content' %}
 <body class="body" style="background-color:#f6f6f6">
 <div class='container'>
-	<form action=""/getanswers/"" method="POST">
+	<form id ='form1' action="" method="POST">
 	<div class='row no-gutters'>
 		{% csrf_token %}
 		{% for question,answer in questionlist.items %}
 		<div class='col-5' style="text-align:center">
 			<div class="alert alert-secondary" role="alert" style="height: 50px;">		
 			 <label style="text-align:right"> {{question}} </label>
-			 <input id="{{questions}}" type="text" name="{{questions}}" value="{{answer}}" style=" width: 50px;"> 
+			 <input id="{{question}}" type="text" name="{{question}}" value="{{answer}}" style=" width: 50px;"> 
 			</div>
 		</div>
 		{% endfor %}
 		<div class="col-5" style="text-align:center;">
-			<button type="submit"  style="height:28px; width:150px" >
-				Get Answers
+			<button type="submit" formaction="/verify/" style="height:28px; width:200px" >
+				Verify Answers
 			</button>			
 		</div>
+			
 		<div class="col-5" style="text-align:center;">
 			<button type="submit" formaction="/savequestions/" style="height:28px; width:250px" >
 			Save Questions and Answers
