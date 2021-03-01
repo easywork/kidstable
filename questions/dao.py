@@ -68,6 +68,7 @@ class QuestionRedisDao(object):
 
 class SessionCacher(object):   
     # TODO: how to ensure singleton for redis DB
+    # TODO: The issue of re-using same session_id, the second time fails
     redis_db = redis.StrictRedis(host=settings.REDIS_HOST,
                                 port=settings.REDIS_PORT, db=REDIS_PROD_DB,
                                 charset="utf-8", decode_responses=True)

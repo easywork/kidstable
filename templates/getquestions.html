@@ -4,7 +4,8 @@
 {% block 'content' %}
 <body class="body" style="background-color:#f6f6f6">
 <div class='container'>
-	<form id ='form1' action="/getanswers/" method="POST">
+	<!-- <form id ='form1' action="/getanswers/" method="POST"> -->
+	<form id ='form1' action="" method="POST">
 	<div class='row no-gutters'>
 		{% csrf_token %}
 		{% for q in questions %}
@@ -15,17 +16,17 @@
 			</div>
 		</div>
 		{% endfor %}
-		<div class="col-3" style="text-align:center;">
+		<!-- <div class="col-3" style="text-align:center;">
 			<button type="submit"  style="height:28px; width:150px" >
 				Get Answers
 			</button>			
-		</div>
-		<div class="col-3" style="text-align:center;">
+		</div> -->
+		<div class="col-4" style="text-align:center;">
 			<button type="submit" formaction="/verify/" style="height:28px; width:200px" >
 				Verify Answers
 			</button>			
 		</div>
-		<div class="col-3" style="text-align:center;">
+		<div class="col-4" style="text-align:center;">
 			<button type="submit" formaction="/savequestions/" style="height:28px; width:250px" >
 			Save Questions and Answers
 			</button>			
